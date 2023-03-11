@@ -11,17 +11,31 @@ function DownloadForm() {
   const handleChange = (e) =>{
     setInputValue(e.target.value)
   }
+  const initLink = () => {
+    setLoading(true)
+    setTimeout(()=>{
+      setLoading(false)
+    }, 2000)
+  }
 
   return (
-    <div className="Download-form">
+    <div className="download-form">
       <Input
+        className="download-form--input"
         placeholder="Paste video url here"
         size="large"
         icon={<DownloadOutlined />}
         onChange={handleChange}
         value={inputValue}
+        allowClear
       />
-      <Button type="primary" icon={<DownloadOutlined />} loading={loading}>
+      <Button
+        className="download-form--button"
+        type="primary"
+        icon={<DownloadOutlined />}
+        loading={loading}
+        onClick={initLink}
+      >
         Download
       </Button>
     </div>

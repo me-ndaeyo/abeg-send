@@ -1,8 +1,35 @@
-.Download-form{
+.download-form{
     min-width: 24rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 1rem;
+}
+
+.download-form--input{
+    border: 1px solid #babcbe;
+}
+.download-form--input:not(:disabled):hover{
+    border: 1px solid #277765;
+}
+
+.download-form--input:not(:disabled):focus-within, .download-form--button:not(:disabled):focus-visible{
+    border: 1px solid #277765;
+    outline: none;
+    box-shadow: 0 0 1px 2.5px #2777657a;
+}
+
+.download-form--button{
+    border: none;
+    background: #277765;
+    box-shadow: none;
+}
+.download-form--button:not(:disabled):hover{
+    border: none;
+    outline: none;
+    background: #195044;
+}
+.download-form--button:not(:disabled):active{
+    background-color: #277765e2;
 }
