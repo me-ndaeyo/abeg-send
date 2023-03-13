@@ -1,14 +1,11 @@
 import React from 'react'
 import DownloadForm from '../components/DownloadForm'
-import Footer from '../components/Footer'
-import Navbar from '../components/Navbar'
+import '../styles/Home.scss'
 
 function Home() {
   return (
-    <div>
-        <Navbar/>
+    <div id="home">
         <DownloadForm/>
-        <Footer/>
     </div>
   )
 }

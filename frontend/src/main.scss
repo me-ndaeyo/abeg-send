@@ -4,8 +4,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: #ffffffde;
-  background-color: #f1f2f2;
+  background-color: #f1f1f2;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -14,13 +13,8 @@
   -webkit-text-size-adjust: 100%;
 }
 
-*{
-  padding-inline: 0;
-  margin-inline: 0;
-}
-
 body {
   margin: 0;
-  max-width: 100vw;
+  max-width: 100%;
   min-height: 100vh;
 }

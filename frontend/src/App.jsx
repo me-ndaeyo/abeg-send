@@ -1,13 +1,9 @@
-import './App.scss'
-import Home from './pages/Home'
+import Routes from './routes/Routes'
 
-function App() {
-
+export default function App() {
   return (
     <div className="App">
-      <Home/>
+      <Routes/>
     </div>
   )
 }
-
-export default App
