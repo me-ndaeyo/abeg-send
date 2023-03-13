@@ -61,31 +61,34 @@ function DownloadForm() {
             src={data.data.url}
           ></iframe>
           <div className="download-video--formats">
-            {data.data.info.map((info, index) => (
-              <a
-                key={index}
-                className="video-format--btn"
-                href={info.url}
-                target="_blank"
-              >
-                {info.mimeType.includes("video") ? (
-                  <VideoCameraOutlined />
-                ) : (
-                  <AudioOutlined />
-                )}
-                {info.hasAudio
-                  ? ` ${info.mimeType.split(";").splice(0, 1)} ${
-                      info.mimeType.includes("video")
-                        ? `(${info.qualityLabel})`
-                        : ""
-                    }`
-                  : null}
-              </a>
-            ))}
+            {data.data.info
+              .filter((info) => info.hasAudio)
+              .map((info, index) => (
+                <a
+                  key={index}
+                  className="video-format--btn"
+                  href={info.url}
+                  target="_blank"
+                  download
+                >
+                  {info.mimeType.includes("video") ? (
+                    <VideoCameraOutlined />
+                  ) : (
+                    <AudioOutlined />
+                  )}
+                  {info.hasAudio
+                    ? ` ${info.mimeType.split(";").splice(0, 1)} ${
+                        info.mimeType.includes("video")
+                          ? `(${info.qualityLabel})`
+                          : ""
+                      }`
+                    : null}
+                </a>
+              ))}
           </div>
         </div>
       ) : (
-        <div>
+        <div className="download-video">
           <p>No downloads yet...</p>
         </div>
       )}
