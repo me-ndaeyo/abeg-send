@@ -40,10 +40,8 @@ function DownloadForm() {
           console.log(err.response.status);
         } else if (err.request) {
           console.log("request error", err.request);
-          // setLoading(false);
         } else {
           console.log("other error", err);
-          // setLoading(false);
         }
       }
     } else {
