@@ -12,36 +12,64 @@ import axios from "axios";
 function DownloadForm() {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState("");
+  const [errMessage, setErrMessage] = useState('');
 
   const initLink = async () => {
-    console.log("... init link");
-    setLoading(true);
-    const apiData = await axios.get(`http://localhost:4000/?url=${inputValue}`);
-
-    setData(apiData);
-    setInputValue("");
-    setLoading(false);
-    console.log(data);
-
-    // setTimeout(()=>{
-    //   setLoading(false)
-    // }, 2000)
+    if (inputValue) {
+      console.log("... init link");
+      setLoading(true);
+      try {
+        await axios
+          .get(`http://localhost:4000/?url=${inputValue}`)
+          .then((res) => {
+            console.log(res);
+            setData(res);
+            setInputValue("");
+          })
+          .catch((err) => {
+            console.log(err)
+            setErrMessage(err.response.data.errorText)
+          });
+          setLoading(false);
+          
+      } catch (err) {
+        setLoading(false);
+        if (err.response) {
+          console.log(err.response.data);
+          console.log(err.response.status);
+        } else if (err.request) {
+          console.log("request error", err.request);
+          // setLoading(false);
+        } else {
+          console.log("other error", err);
+          // setLoading(false);
+        }
+      }
+    } else {
+      setErrMessage("Input field cannot stay empty")
+    }
   };
 
   return (
     <div className="download">
       <div className="download-form">
-        <Input
-          className="download-form--input"
-          placeholder="Paste video url here"
-          name="url"
-          size="large"
-          icon={<DownloadOutlined />}
-          onChange={(e) => setInputValue(e.target.value)}
-          value={inputValue}
-          allowClear
-        />
+        <div className="download-form--input">
+          <Input
+            className="input"
+            placeholder="Paste video url here"
+            name="url"
+            size="large"
+            icon={<DownloadOutlined />}
+            onChange={(e) => {
+              setInputValue(e.target.value)
+              setErrMessage("");
+            }}
+            value={inputValue}
+            allowClear
+          />
+          <small className="input-message">{errMessage}</small>
+        </div>
         <Button
           className="download-form--button"
           type="primary"
@@ -49,20 +77,21 @@ function DownloadForm() {
           loading={loading}
           onClick={initLink}
         >
-          Download
+          {`Initializ${loading ? "ing" : "e"} link`}
         </Button>
       </div>
       {data ? (
         <div className="download-video">
           <iframe
-            width="384"
+            width="360"
             height="240"
             id="video"
             src={data.data.url}
           ></iframe>
           <div className="download-video--formats">
-            {data.data.info
-              .filter((info) => info.hasAudio)
+            <h3>Available formats for download:</h3>
+            {data.data?.info
+              ?.filter((info) => info.hasAudio)
               .map((info, index) => (
                 <a
                   key={index}

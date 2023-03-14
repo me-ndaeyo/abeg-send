@@ -10,13 +10,20 @@ app.use(cors())
 app.get("/", async (req, res) => {
     try{
         const url = req.query.url
-        const videoID = await ytdl.getURLVideoID(url)
-        const metaInfo = await ytdl.getInfo(url)
-        let data = {
-            url: `https://www.youtube.com/embed/${videoID}`,
-            info: metaInfo.formats
+        const validate = await ytdl.validateURL(url)
+        if(validate){
+            const videoID = await ytdl.getURLVideoID(url)
+            const metaInfo = await ytdl.getInfo(url)
+            let data = {
+                url: `https://www.youtube.com/embed/${videoID}`,
+                info: metaInfo.formats
+            }
+            return res.send(data)
+        } else {
+            console.log(validate);
+            res.status(400)
+            res.send({errorText:'Url is invalid. Paste a valid youtube url.'})
         }
-        return res.send(data)
     } catch (err){
         return res.status(500)
     }

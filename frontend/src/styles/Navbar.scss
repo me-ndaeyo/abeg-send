@@ -5,7 +5,7 @@ nav{
 
     // margin-block-end: 1.2rem;
     height: 0.6rem;
-    padding: 2.6rem 1.8rem;
+    padding-block: 2.6rem;
     background-color: #f1f1f2;
 }
 
@@ -63,7 +63,7 @@ nav{
 
 @media screen and (max-width: 37.5em){
     nav{
-        padding: 2.4rem 1.2rem;
+        padding-block: 2.4rem;
     }
 
     .nav-logo img{
