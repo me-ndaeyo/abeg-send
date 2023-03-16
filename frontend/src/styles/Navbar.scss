@@ -3,19 +3,16 @@ nav{
     justify-content: space-between;
     align-items: center;
 
-    // margin-block-end: 1.2rem;
-    height: 0.6rem;
-    padding-block: 2.6rem;
-    background-color: #f1f1f2;
+    height: max-content;
+    padding: 0.8rem 1.6rem;
 }
 
 .nav-logo{
-    width: 20%;
-}
-
-.nav-logo img{
-    max-width: 40%;
-    height: auto;
+    width: 5.4rem;
+    height: 4.4rem;
+    background-image: url('../assets/logo/abeg-send.webp');
+    background-position: center;
+    background-size: cover;
 }
 
 .nav-links{
@@ -39,31 +36,9 @@ nav{
 
 
 // MEDIA QUERIES
-@media screen and (max-width: 73em){
-    .nav-logo img{
-        max-width: 50%;
-    }
-}
-
-@media screen and (max-width: 54em){
-    nav{
-        height: 0.3rem;
-    }
-
-    .nav-logo img{
-        max-width: 57%;
-    }
-}
-
-@media screen and (max-width: 45em){
-    .nav-logo img{
-        max-width: 70%;
-    }
-}
-
 @media screen and (max-width: 37.5em){
     nav{
-        padding-block: 2.4rem;
+        padding-inline: 1.2rem;
     }
 
     .nav-logo img{

@@ -8,7 +8,7 @@ function Navbar() {
     <nav>
       <div className="nav-logo">
         <Link to="/">
-          <img src={logo} alt="abeg-send--logo" />
+          {/* <img src={logo} alt="abeg-send--logo" /> */}
         </Link>
       </div>
       <ul className="nav-links">

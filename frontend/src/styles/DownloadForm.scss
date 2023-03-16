@@ -21,9 +21,14 @@
     flex-direction: column;
 }
 
+.input, .input > *{
+    background: inherit;
+}
+
 .input{
     border: 1px solid #babcbe;
 }
+
 .input:not(:disabled):hover{
     border: 1px solid #277765;
 }

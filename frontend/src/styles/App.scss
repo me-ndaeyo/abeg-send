@@ -1,0 +1,33 @@
+#light{
+    background-color: #f1f2f3;
+    transition: all 0.4s ease;
+}
+
+#dark{
+    background-color: #312f2f;
+    color: #969899;
+    transition: all 0.4s ease;
+}
+
+#dark .nav-logo{
+    background: url('../assets/logo/abeg-send-dark.webp');
+    background-position: center;
+    background-size: cover;
+    filter: opacity(0.65);
+}
+
+#dark .nav-link--el{
+    color: #969899;
+}
+#dark .nav-link--el:hover{
+    cursor: pointer;
+    color: #277765;
+}
+
+#dark .input{
+    border-color: #656566;
+}
+
+#dark footer{
+    color: #969899;
+}
