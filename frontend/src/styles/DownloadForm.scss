@@ -1,6 +1,44 @@
+.download-tab--titles{
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 0.2rem;
+    padding-inline: 0;
+    max-width: max-content;
+    margin: 0 auto;
+    padding: 0.2rem;
+}
+
+.download-tab--title{
+    color: #5a5959;
+    background-color: #cacaca;
+    font-size: 15px;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.download-tab--title:hover{
+    background-color: #bcbbbb;
+}
+
+.download-tab--title---active{
+    color: #eee;
+    background-color: #5a5959;
+}
+.download-tab--title---active:hover{
+    background-color: #4e4c4c;
+}
+
 .download{
     max-width: 26rem;
     margin: 2.4rem auto;
+    display: none;
+}
+
+.download-active{
+    display: block;
 }
 
 .download .download-form{

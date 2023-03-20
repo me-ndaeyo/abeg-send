@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { themeContext } from '../App';
+import { BsMoonFill, BsSun } from 'react-icons/bs'
 import '../styles/Footer.scss'
 
 function Footer() {
@@ -11,7 +12,7 @@ function Footer() {
         <p>&copy;{` ${year} All Rights Reserved, abeg send`}</p>
       </div>
       <div className="footer-theme">
-        <p onClick={toggleTheme}>{light? 'Light' : 'Dark'}</p>
+        <p onClick={toggleTheme}>{light? <BsMoonFill/> : <BsSun/>}</p>
       </div>
     </footer>
   );
