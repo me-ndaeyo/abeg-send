@@ -10,124 +10,263 @@ import "../styles/DownloadForm.scss";
 import axios from "axios";
 
 function DownloadForm() {
-  const [inputValue, setInputValue] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState("");
-  const [errMessageYt, setErrMessageYt] = useState('');
-  const [errMessageFb, setErrMessageFb] = useState('');
-  const [errMessageTw, setErrMessageTw] = useState('');
+  const [youtubeInputValue, setYoutubeInputValue] = useState("");
+  const [facebookInputValue, setFacebookInputValue] = useState("");
+  const [instagramInputValue, setInstagramInputValue] = useState("");
+  const [twitterInputValue, setTwitterInputValue] = useState("");
+
+  const [youtubeData, setYoutubeData] = useState("");
+  const [facebookData, setFacebookData] = useState("");
+  const [instagramData, setInstagramData] = useState("");
+  const [twitterData, setTwitterData] = useState("");
+
+  const [errMessageYt, setErrMessageYt] = useState("");
+  const [errMessageIg, setErrMessageIg] = useState("");
+  const [errMessageTw, setErrMessageTw] = useState("");
+  const [errMessageFb, setErrMessageFb] = useState("");
+
   const [tab, setTab] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const apiURL =
+    "https://aiov-download-youtube-videos.p.rapidapi.com/GetVideoDetails";
 
   const initYtLink = async () => {
-    if (inputValue) {
-      console.log("... init link");
+    const options = {
+      method: "GET",
+      url: apiURL,
+      params: {
+        URL: youtubeInputValue,
+      },
+      headers: {
+        "X-RapidAPI-Key": "767534382amsh8eac27d49526885p1814d7jsna8cd3b55656a",
+        "X-RapidAPI-Host": "aiov-download-youtube-videos.p.rapidapi.com",
+      },
+    };
+
+    if (youtubeInputValue) {
+      console.log("... init yt link");
       setLoading(true);
-      try {
-        await axios
-          .get(`http://localhost:4000/?yturl=${inputValue}`)
-          .then((res) => {
-            console.log(res);
-            setData(res);
-            setInputValue("");
-          })
-          .catch((err) => {
-            console.log('GET error')
-            console.log(err)
-            setErrMessageYt(err.response.data.errorText)
-          });
-          setLoading(false);
-          
-      } catch (err) {
-        setLoading(false);
-        if (err.response) {
-          console.log(err.response.data);
-          console.log(err.response.status);
-        } else if (err.request) {
-          console.log("request error", err.request);
-        } else {
-          console.log("other error", err);
-        }
-      }
+      await axios
+        .request(options)
+        .then((response) => {
+          setYoutubeData(response.data);
+          console.log(response.data);
+          setYoutubeInputValue("");
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+      setLoading(false);
     } else {
-      setErrMessageYt("Input field cannot stay empty")
+      setErrMessageYt("Input field cannot stay empty");
     }
   };
-  const initFbLink = async () => {
-    if (inputValue) {
-      console.log("... init link");
-      // setLoading(true);
-      try {
-        await axios
-          .get(`http://localhost:4000/?fburl=${inputValue}`)
-          .then((res) => {
-            console.log(res);
-            // setData(res);
-            setInputValue("");
-          })
-          .catch((err) => {
-            console.log('GET error')
-            console.log(err)
-            // setErrMessage(err.response.data.errorText)
-          });
-          setLoading(false);
-          
-      } catch (err) {
-        setLoading(false);
-        if (err.response) {
-          console.log(err.response.data);
-          console.log(err.response.status);
-        } else if (err.request) {
-          console.log("request error", err.request);
-        } else {
-          console.log("other error", err);
-        }
-      }
+
+  //   const options = {
+  //   method: 'POST',
+  //   url: 'https://downtube.p.rapidapi.com/api/Download/getUrlInfo',
+  //   headers: {
+  //     'content-type': 'application/json',
+  //     'X-RapidAPI-Key': '767534382amsh8eac27d49526885p1814d7jsna8cd3b55656a',
+  //     'X-RapidAPI-Host': 'downtube.p.rapidapi.com'
+  //   },
+  //   data: '{"url":"https://youtu.be/HY3lNkHbpS0"}'
+  // };
+
+  // axios.request(options).then(function (response) {
+  // 	console.log(response.data);
+  // }).catch(function (error) {
+  // 	console.error(error);
+  // });
+
+  const initIgLink = async () => {
+    const options = {
+      method: "GET",
+      url: "https://instagram-downloader-download-instagram-videos-stories.p.rapidapi.com/index",
+      params: { url: instagramInputValue },
+      headers: {
+        "X-RapidAPI-Key": "767534382amsh8eac27d49526885p1814d7jsna8cd3b55656a",
+        "X-RapidAPI-Host":
+          "instagram-downloader-download-instagram-videos-stories.p.rapidapi.com",
+      },
+    };
+
+    if (instagramInputValue) {
+      console.log("... init ig link");
+      setLoading(true);
+      await axios
+        .request(options)
+        .then((response) => {
+          setInstagramData(response.data);
+          console.log(response.data);
+          setInstagramInputValue("");
+        })
+        .catch(function (error) {
+          console.log(error);
+          if (error.response.status === 500) {
+            setErrMessageIg(
+              "Internal server error just occured, please try again later."
+            );
+          } else if (
+            error.response.status === 400 ||
+            error.response.status === 404
+          ) {
+            setErrMessageIg(
+              `${error.response.data.error
+                .split(" or")
+                .slice(0, 1)}. Paste a valid link.`
+            );
+          } else {
+            setErrMessageIg(`${error.message} `);
+          }
+        });
+      setLoading(false);
     } else {
-      setErrMessageFb("Input field cannot stay empty")
+      setErrMessageIg("Input field cannot stay empty");
+    }
+  };
+
+  const initFbLink = async () => {
+    const options = {
+      method: "GET",
+      url: "https://facebook-reel-and-video-downloader.p.rapidapi.com/app/main.php",
+      params: { url: facebookInputValue },
+      headers: {
+        "X-RapidAPI-Key": "767534382amsh8eac27d49526885p1814d7jsna8cd3b55656a",
+        "X-RapidAPI-Host": "facebook-reel-and-video-downloader.p.rapidapi.com",
+      },
+    };
+
+    if (facebookInputValue) {
+      console.log("... init fb link");
+      setLoading(true);
+      await axios
+        .request(options)
+        .then((response) => {
+          if (response.data === false) {
+            setErrMessageFb("Link cannot be accessed");
+          } else {
+            setFacebookData(response.data);
+            Object.entries(response.data.links).map((link) =>
+              console.log(link)
+            );
+          }
+          console.log(response.data);
+          setFacebookInputValue("");
+        })
+        .catch(function (error) {
+          console.log(error);
+          if (error.response?.status === 500) {
+            setErrMessageFb(
+              "Internal server error just occured, please try again later."
+            );
+          } else if (
+            error.response?.status === 400 ||
+            error.response?.status === 404
+          ) {
+            setErrMessageFb(
+              `${error.response?.data.error
+                .split(" or")
+                .slice(0, 1)}. Paste a valid link.`
+            );
+          }
+        });
+      setLoading(false);
+    } else {
+      setErrMessageFb("Input field cannot stay empty");
     }
   };
 
   const initTwitterLink = async () => {
-    if (inputValue) {
-      console.log("... init link");
-      // setLoading(true);
-      try {
-        await axios
-          .get(`http://localhost:4000/?twurl=${inputValue}`)
-          .then((res) => {
-            console.log(res);
-            // setData(res);
-            setInputValue("");
-          })
-          .catch((err) => {
-            console.log('GET error')
-            console.log(err)
-            setErrMessageTw(err.response.data.errorText)
-          });
-          setLoading(false);
-          
-      } catch (err) {
-        setLoading(false);
-        if (err.response) {
-          console.log(err.response.data);
-          console.log(err.response.status);
-        } else if (err.request) {
-          console.log("request error", err.request);
-        } else {
-          console.log("other error", err);
-        }
-      }
+    const options = {
+      method: "GET",
+      url: apiURL,
+      params: {
+        URL: twitterInputValue,
+      },
+      headers: {
+        "X-RapidAPI-Key": "767534382amsh8eac27d49526885p1814d7jsna8cd3b55656a",
+        "X-RapidAPI-Host": "aiov-download-youtube-videos.p.rapidapi.com",
+      },
+    };
+
+    if (twitterInputValue) {
+      console.log("... init tw link");
+      setLoading(true);
+      await axios
+        .request(options)
+        .then((response) => {
+          setTwitterData(response.data);
+          console.log(response.data);
+          setTwitterInputValue("");
+        })
+        .catch(function (error) {
+          console.log(error);
+          if (error.response.status === 500) {
+            setErrMessageTw(
+              "Internal server error just occured, please try again later."
+            );
+          } else if (
+            error.response.status === 400 ||
+            error.response.status === 404
+          ) {
+            setErrMessageTw(
+              `${error.response.data.error
+                .split(" or")
+                .slice(0, 1)}. Paste a valid link.`
+            );
+          }
+        });
+      setLoading(false);
     } else {
-      setErrMessageTw("Input field cannot stay empty")
+      setErrMessageTw("Input field cannot stay empty");
     }
   };
 
   return (
     <div className="container">
       <ul className="download-tab--titles">
-        <li className={tab === 1 ? "download-tab--title download-tab--title---active" : "download-tab--title"} onClick={() => setTab(1)}>Youtube</li>
-        <li className={tab === 2 ? "download-tab--title download-tab--title---active" : "download-tab--title"} onClick={() => setTab(2)}>Reels</li>
-        <li className={tab === 3 ? "download-tab--title download-tab--title---active" : "download-tab--title"} onClick={() => setTab(3)}>Twitter</li>
+        <li
+          className={
+            tab === 1
+              ? "download-tab--title download-tab--title---active"
+              : "download-tab--title"
+          }
+          onClick={() => setTab(1)}
+        >
+          Youtube
+        </li>
+        <li
+          className={
+            tab === 2
+              ? "download-tab--title download-tab--title---active"
+              : "download-tab--title"
+          }
+          onClick={() => setTab(2)}
+        >
+          IG/Reels
+        </li>
+        <li
+          className={
+            tab === 3
+              ? "download-tab--title download-tab--title---active"
+              : "download-tab--title"
+          }
+          onClick={() => setTab(3)}
+        >
+          Twitter
+        </li>
+        <li
+          className={
+            tab === 4
+              ? "download-tab--title download-tab--title---active"
+              : "download-tab--title"
+          }
+          onClick={() => setTab(4)}
+        >
+          Facebook/Reels
+        </li>
       </ul>
 
       <div className="download-tabs">
@@ -141,10 +280,10 @@ function DownloadForm() {
                 size="large"
                 icon={<DownloadOutlined />}
                 onChange={(e) => {
-                  setInputValue(e.target.value);
+                  setYoutubeInputValue(e.target.value);
                   setErrMessageYt("");
                 }}
-                value={inputValue}
+                value={youtubeInputValue}
                 allowClear
               />
               <small className="input-message">{errMessageYt}</small>
@@ -159,38 +298,34 @@ function DownloadForm() {
               {`Initializ${loading ? "ing" : "e"} link`}
             </Button>
           </div>
-          {data ? (
+          {youtubeData ? (
             <div className="download-video">
-              <iframe
+              {/* <iframe
                 width="360"
                 height="240"
                 id="video"
-                src={data.data.url}
-              ></iframe>
+                src={youtubeData.original_url}
+              ></iframe> */}
+              <h3>Choose download format:</h3>
               <div className="download-video--formats">
-                <h3>Available formats for download:</h3>
-                {data.data?.info
-                  ?.filter((info) => info.hasAudio)
-                  .map((info, index) => (
+                {youtubeData.formats
+                  ?.filter((format) => format.audio_channels)
+                  .map((format, index) => (
                     <a
                       key={index}
                       className="video-format--btn"
-                      href={info.url}
+                      href={format.url}
                       target="_blank"
                       download
                     >
-                      {info.mimeType.includes("video") ? (
+                      {format.video_ext !== "none" ? (
                         <VideoCameraOutlined />
                       ) : (
                         <AudioOutlined />
                       )}
-                      {info.hasAudio
-                        ? ` ${info.mimeType.split(";").splice(0, 1)} ${
-                            info.mimeType.includes("video")
-                              ? `(${info.qualityLabel})`
-                              : ""
-                          }`
-                        : null}
+                      {format.video_ext === "none"
+                        ? " " + format.audio_ext
+                        : " " + format.format_note}
                     </a>
                   ))}
               </div>
@@ -202,30 +337,49 @@ function DownloadForm() {
             <div className="download-form--input">
               <Input
                 className="input"
-                placeholder="Paste facebook video url here"
+                placeholder="Paste instagram video url here"
                 name="fburl"
                 size="large"
                 icon={<DownloadOutlined />}
                 onChange={(e) => {
-                  setInputValue(e.target.value);
-                  setErrMessageFb("");
+                  setInstagramInputValue(e.target.value);
+                  setErrMessageIg("");
                 }}
-                value={inputValue}
+                value={instagramInputValue}
                 allowClear
               />
-              <small className="input-message">{errMessageFb}</small>
+              <small className="input-message">{errMessageIg}</small>
             </div>
             <Button
               className="download-form--button"
               type="primary"
               icon={<DownloadOutlined />}
               loading={loading}
-              onClick={initFbLink}
+              onClick={initIgLink}
             >
               {`Initializ${loading ? "ing" : "e"} link`}
             </Button>
           </div>
+          {instagramData ? (
+            <div className="download-video">
+              {/* <iframe
+                id="video"
+                src={instagramData.thumbnail}
+              ></iframe> */}
+              <h3 className="download-video--title">Choose download format:</h3>
+              <div className="download-video--formats">
+                <a
+                  href={instagramData.media}
+                  target="_blank"
+                  className="video-format--btn"
+                >
+                  Download
+                </a>
+              </div>
+            </div>
+          ) : null}
         </div>
+
         <div className={tab === 3 ? "download download-active" : "download"}>
           <div className="download-form">
             <div className="download-form--input">
@@ -236,10 +390,10 @@ function DownloadForm() {
                 size="large"
                 icon={<DownloadOutlined />}
                 onChange={(e) => {
-                  setInputValue(e.target.value);
+                  setTwitterInputValue(e.target.value);
                   setErrMessageTw("");
                 }}
-                value={inputValue}
+                value={twitterInputValue}
                 allowClear
               />
               <small className="input-message">{errMessageTw}</small>
@@ -254,6 +408,73 @@ function DownloadForm() {
               {`Initializ${loading ? "ing" : "e"} link`}
             </Button>
           </div>
+          {twitterData ? (
+            <div className="download-video">
+              <h3 className="download-video--title">Choose download format:</h3>
+              <div className="download-video--formats">
+                {twitterData.formats.map((format, index) => (
+                  <a
+                    href={format.url}
+                    key={index}
+                    className="video-format--btn"
+                  >
+                    {format.video_ext !== "none" ? (
+                      <VideoCameraOutlined />
+                    ) : (
+                      <AudioOutlined />
+                    )}
+                    {" " + format.width + "p"}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </div>
+
+        <div className={tab === 4 ? "download download-active" : "download"}>
+          <div className="download-form">
+            <div className="download-form--input">
+              <Input
+                className="input"
+                placeholder="Paste facebook video url here"
+                name="fburl"
+                size="large"
+                icon={<DownloadOutlined />}
+                onChange={(e) => {
+                  setFacebookInputValue(e.target.value);
+                  setErrMessageFb("");
+                }}
+                value={facebookInputValue}
+                allowClear
+              />
+              <small className="input-message">{errMessageFb}</small>
+            </div>
+            <Button
+              className="download-form--button"
+              type="primary"
+              icon={<DownloadOutlined />}
+              loading={loading}
+              onClick={initFbLink}
+            >
+              {`Initializ${loading ? "ing" : "e"} link`}
+            </Button>
+          </div>
+          {facebookData ? (
+            <div className="download-video">
+              {/* <iframe
+                id="video"
+                src={facebookData.thumbnail}
+              ></iframe> */}
+              <h3 className="download-video--title">Choose download format:</h3>
+              <div className="download-video--formats">
+                {Object.entries(facebookData.links).map((data, index) => (
+                  <a href={data[1]} key={index} className="video-format--btn" download>
+                    {data[0]}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>
