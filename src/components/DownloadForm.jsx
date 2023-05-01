@@ -56,6 +56,23 @@ function DownloadForm() {
         })
         .catch(function (error) {
           console.error(error);
+          if (error.response.status === 500) {
+            setErrMessageYt(
+              "Internal server error just occured, please try again later."
+            );
+          } else if (
+            error.response.status === 400 ||
+            error.response.status === 404
+          ) {
+            setErrMessageYt(
+              // `${error.response.data.error
+              //   .split(" or")
+              //   .slice(0, 1)}. Paste a valid link.`
+              '404 error'
+            );
+          } else {
+            setErrMessageYt(`${error.message} `);
+          }
         });
       setLoading(false);
     } else {
@@ -362,10 +379,10 @@ function DownloadForm() {
           </div>
           {instagramData ? (
             <div className="download-video">
-              {/* <iframe
+              <iframe
                 id="video"
-                src={instagramData.thumbnail}
-              ></iframe> */}
+                src={instagramData.media}
+              ></iframe>
               <h3 className="download-video--title">Choose download format:</h3>
               <div className="download-video--formats">
                 <a
@@ -465,6 +482,7 @@ function DownloadForm() {
                 id="video"
                 src={facebookData.thumbnail}
               ></iframe> */}
+              <img className="download-video--iframe" src={facebookData.thumbnail} alt={facebookData.title} />
               <h3 className="download-video--title">Choose download format:</h3>
               <div className="download-video--formats">
                 {Object.entries(facebookData.links).map((data, index) => (

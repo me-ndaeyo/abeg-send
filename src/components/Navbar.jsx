@@ -11,13 +11,13 @@ function Navbar() {
           {/* <img src={logo} alt="abeg-send--logo" /> */}
         </Link>
       </div>
-      <ul className="nav-links">
+      {/* <ul className="nav-links">
         <li className="nav-link">
           <Link className="nav-link--el" to="/help">
             Help
           </Link>
         </li>
-      </ul>
+      </ul> */}
     </nav>
   );
 }
