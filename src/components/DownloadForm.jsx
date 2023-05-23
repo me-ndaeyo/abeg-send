@@ -55,23 +55,22 @@ function DownloadForm() {
           setYoutubeInputValue("");
         })
         .catch(function (error) {
-          console.error(error);
+          // console.log(error);
           if (error.response.status === 500) {
             setErrMessageYt(
-              "Internal server error just occured, please try again later."
+              "Error: Internal server error occured, try again later."
             );
           } else if (
             error.response.status === 400 ||
             error.response.status === 404
           ) {
             setErrMessageYt(
-              // `${error.response.data.error
-              //   .split(" or")
-              //   .slice(0, 1)}. Paste a valid link.`
-              '404 error'
+              `Error: ${error.response.data?.error
+                ?.split(" or")
+                .slice(0, 1)}. Paste a valid link.`
             );
           } else {
-            setErrMessageYt(`${error.message} `);
+            setErrMessageYt(`Error: ${error.message} `);
           }
         });
       setLoading(false);
@@ -97,6 +96,7 @@ function DownloadForm() {
   // 	console.error(error);
   // });
 
+  // ********** INSTAGRAM ***********
   const initIgLink = async () => {
     const options = {
       method: "GET",
@@ -123,19 +123,19 @@ function DownloadForm() {
           console.log(error);
           if (error.response.status === 500) {
             setErrMessageIg(
-              "Internal server error just occured, please try again later."
+              "Error: Internal server error occured, try again later."
             );
           } else if (
             error.response.status === 400 ||
             error.response.status === 404
           ) {
             setErrMessageIg(
-              `${error.response.data.error
+              `Error: ${error.response?.data.error
                 .split(" or")
                 .slice(0, 1)}. Paste a valid link.`
             );
           } else {
-            setErrMessageIg(`${error.message} `);
+            setErrMessageIg(`Error: ${error.message} `);
           }
         });
       setLoading(false);
@@ -144,6 +144,7 @@ function DownloadForm() {
     }
   };
 
+  // ********** FACEBOOK ***********
   const initFbLink = async () => {
     const options = {
       method: "GET",
@@ -162,28 +163,28 @@ function DownloadForm() {
         .request(options)
         .then((response) => {
           if (response.data === false) {
-            setErrMessageFb("Link cannot be accessed");
+            setErrMessageFb("Error: Link cannot be accessed");
+          } else if (response.data.success === false) {
+            setErrMessageFb(response.data.error);
+            // console.log(response.data)
           } else {
             setFacebookData(response.data);
-            Object.entries(response.data.links).map((link) =>
-              console.log(link)
-            );
           }
           console.log(response.data);
           setFacebookInputValue("");
         })
         .catch(function (error) {
-          console.log(error);
+          // console.log(error);
           if (error.response?.status === 500) {
             setErrMessageFb(
-              "Internal server error just occured, please try again later."
+              "Error: Internal server error occured, try again later."
             );
           } else if (
             error.response?.status === 400 ||
             error.response?.status === 404
           ) {
             setErrMessageFb(
-              `${error.response?.data.error
+              `Error: ${error.response?.data.error
                 .split(" or")
                 .slice(0, 1)}. Paste a valid link.`
             );
@@ -195,6 +196,7 @@ function DownloadForm() {
     }
   };
 
+  // ********** TWITTER ***********
   const initTwitterLink = async () => {
     const options = {
       method: "GET",
@@ -209,7 +211,7 @@ function DownloadForm() {
     };
 
     if (twitterInputValue) {
-      console.log("... init tw link");
+      // console.log("... init tw link");
       setLoading(true);
       await axios
         .request(options)
@@ -219,17 +221,17 @@ function DownloadForm() {
           setTwitterInputValue("");
         })
         .catch(function (error) {
-          console.log(error);
+          // console.log(error);
           if (error.response.status === 500) {
             setErrMessageTw(
-              "Internal server error just occured, please try again later."
+              "Error: Internal server error occured, try again later."
             );
           } else if (
             error.response.status === 400 ||
             error.response.status === 404
           ) {
             setErrMessageTw(
-              `${error.response.data.error
+              `Error: ${error.response.data.error
                 .split(" or")
                 .slice(0, 1)}. Paste a valid link.`
             );
@@ -379,10 +381,7 @@ function DownloadForm() {
           </div>
           {instagramData ? (
             <div className="download-video">
-              <iframe
-                id="video"
-                src={instagramData.media}
-              ></iframe>
+              <iframe id="video" src={instagramData.media}></iframe>
               <h3 className="download-video--title">Choose download format:</h3>
               <div className="download-video--formats">
                 <a
@@ -429,20 +428,29 @@ function DownloadForm() {
             <div className="download-video">
               <h3 className="download-video--title">Choose download format:</h3>
               <div className="download-video--formats">
-                {twitterData.formats.map((format, index) => (
-                  <a
-                    href={format.url}
-                    key={index}
-                    className="video-format--btn"
-                  >
-                    {format.video_ext !== "none" ? (
-                      <VideoCameraOutlined />
-                    ) : (
-                      <AudioOutlined />
-                    )}
-                    {" " + format.width + "p"}
-                  </a>
-                ))}
+                {twitterData.formats
+                  .filter(
+                    (format, idx) =>
+                      format.video_ext === "mp4" &&
+                      format.manifest_url !== null &&
+                      format.width != null &&
+                      twitterData.formats.indexOf(format) === idx
+                  )
+                  .map((format, index) => (
+                    <a
+                      href={format.url}
+                      key={index}
+                      className="video-format--btn"
+                      target="_blank"
+                    >
+                      {format.video_ext !== "none" ? (
+                        <VideoCameraOutlined />
+                      ) : (
+                        <AudioOutlined />
+                      )}
+                      {" " + format.width + "p"}
+                    </a>
+                  ))}
               </div>
             </div>
           ) : null}
@@ -482,11 +490,16 @@ function DownloadForm() {
                 id="video"
                 src={facebookData.thumbnail}
               ></iframe> */}
-              <img className="download-video--iframe" src={facebookData.thumbnail} alt={facebookData.title} />
-              <h3 className="download-video--title">Choose download format:</h3>
+              {/* <img className="download-video--iframe" src={facebookData.thumbnail} alt={facebookData.title} />
+              <h3 className="download-video--title">Choose download format:</h3> */}
               <div className="download-video--formats">
-                {Object.entries(facebookData.links).map((data, index) => (
-                  <a href={data[1]} key={index} className="video-format--btn" download>
+                {Object?.entries(facebookData?.links)?.map((data, index) => (
+                  <a
+                    href={data[1]}
+                    key={index}
+                    className="video-format--btn"
+                    download
+                  >
                     {data[0]}
                   </a>
                 ))}
