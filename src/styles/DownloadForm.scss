@@ -13,10 +13,11 @@
 
 .download-tab--title{
     color: #5a5959;
-    font-weight: 500;
+    font-weight: 600;
     border-bottom:2px solid transparent;
     background-color:#cacaca;
-    font-size: 15px;
+    text-transform: capitalize;
+    font-size: 16px;
     padding: 0.15rem 0.4rem;
     border-radius: 4px 4px 0px 0px;
     cursor: pointer;
@@ -124,9 +125,9 @@
     background-color: transparent;
     border-radius: 4px;
     font-size: 0.9rem;
-    color: #222;
-    background-color: #787676;
-    // border: 1px solid #277765;
+    color: #cacaca;
+    background-color: #222;
+    border: 2px solid #277765;
     text-decoration: none;
 }
 

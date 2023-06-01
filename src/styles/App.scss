@@ -4,7 +4,7 @@
 }
 
 #dark{
-    background-color: #312f2f;
+    background-color: #2a2929;
     color: #969899;
     transition: all 0.4s ease;
 }
@@ -25,11 +25,11 @@
 }
 
 #dark .input{
-    border-color: #656566;
+    border-color: #4d4d4e;
 }
 
-#dark {
-
+#dark input::placeholder, #dark input{
+    color: #969899ba;
 }
 
 #dark footer{

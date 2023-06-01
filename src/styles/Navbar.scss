@@ -25,11 +25,23 @@ nav{
 
 .nav-link--el{
     color: #242424;
+    font-weight: 500;
     text-decoration: none;
+    padding: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .nav-link--el:hover{
     cursor: pointer;
     color: #277765;
+}
+
+.border{
+    border: 2px solid;
+    border-radius: 50%;
+    height: 1rem;
+    width: 1rem;
 }
 
 
@@ -46,8 +58,8 @@ nav{
     }
 }
 
-@media screen and (max-width: 32em){
-    .nav-logo img{
-        max-width: 100%;
-    }
-}
+// @media screen and (max-width: 32em){
+//     .nav-logo img{
+//         max-width: 100%;
+//     }
+// }
