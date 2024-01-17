@@ -1,0 +1,65 @@
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: max-content;
+    padding: 0.8rem 1.6rem;
+}
+
+.nav-logo{
+    width: 5.4rem;
+    height: 4.4rem;
+    background-image: url('../assets/logo/abeg-send.webp');
+    background-position: center;
+    background-size: cover;
+}
+
+.nav-links{
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 1.2rem;
+}
+
+.nav-link--el{
+    color: #242424;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nav-link--el:hover{
+    cursor: pointer;
+    color: #277765;
+}
+
+.border{
+    border: 2px solid;
+    border-radius: 50%;
+    height: 1rem;
+    width: 1rem;
+}
+
+
+
+
+// MEDIA QUERIES
+@media screen and (max-width: 37.5em){
+    nav{
+        padding-inline: 1.2rem;
+    }
+
+    .nav-logo img{
+        max-width: 85%;
+    }
+}
+
+// @media screen and (max-width: 32em){
+//     .nav-logo img{
+//         max-width: 100%;
+//     }
+// }
